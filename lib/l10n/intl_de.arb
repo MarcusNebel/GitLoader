@@ -1,0 +1,32 @@
+{
+  "@@locale": "de",
+  "home": "Startseite",
+  "settings": "Einstellungen",
+  "install": "Installieren",
+  "update": "Aktualisieren",
+  "finish": "Fertig",
+
+  "settings_language": "Sprache",
+  "settings_theme": "Thema",
+  "settings_repositories": "Repositorys verwalten",
+
+  "settings_repository_options_manage_your_repositories": "Verwalte deine Repositorys",
+  "settings_repository_options_no_repositories": "Keine Repositorys hinzugefügt.",
+  "settings_repository_options_tap_to_view_release": "Tippen zum Anzeigen der Releases",
+  "settings_repository_options_no_apks_found": "Keine APKs gefunden.",
+  "settings_repository_options_no_apks_found_description": "Dieses Repo enthält kein Release mit einer APK-Datei.",
+  "settings_repository_options_version": "Version: {version}",
+  "settings_repository_options_filename": "Dateiname: {filename}",
+  "settings_repository_options_description": "Beschreibung:",
+  "settings_repository_options_download_url": "Download-URL:",
+
+  "settings_language_manage_languages": "Sprachen verwalten",
+  "settings_language_options_system": "Systemstandard",
+  "settings_language_options_english": "Englisch",
+  "settings_language_options_german": "Deutsch",
+
+  "settings_theme_manage_themes": "Themen verwalten",
+  "settings_theme_options_system": "Systemstandard",
+  "settings_theme_options_light": "Hell",
+  "settings_theme_options_dark": "Dunkel"
+}

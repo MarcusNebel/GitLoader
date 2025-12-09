@@ -1,0 +1,32 @@
+{
+  "@@locale": "en",
+  "home": "Home",
+  "settings": "Settings",
+  "install": "Install",
+  "update": "Update",
+  "finish": "Finish",
+
+  "settings_language": "Language",
+  "settings_theme": "Theme",
+  "settings_repositories": "Manage Repositories",
+
+  "settings_repository_options_manage_your_repositories": "Manage your repositories",
+  "settings_repository_options_no_repositories": "No repositories added.",
+  "settings_repository_options_tap_to_view_release": "Tap to view releases",
+  "settings_repository_options_no_apks_found": "No APKs found.",
+  "settings_repository_options_no_apks_found_description": "This repo does not contain a release with an APK file.",
+  "settings_repository_options_version": "Version: {version}",
+  "settings_repository_options_filename": "Dateiname: {filename}",
+  "settings_repository_options_description": "Beschreibung:",
+  "settings_repository_options_download_url": "Download-URL:",
+
+  "settings_language_manage_languages": "Manage languages",
+  "settings_language_options_system": "System Default",
+  "settings_language_options_english": "English",
+  "settings_language_options_german": "German",
+  
+  "settings_theme_manage_themes": "Manage themes",
+  "settings_theme_options_system": "System Default",
+  "settings_theme_options_light": "Light",
+  "settings_theme_options_dark": "Dark"
+}
