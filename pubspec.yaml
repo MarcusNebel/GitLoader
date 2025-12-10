@@ -18,6 +18,9 @@ dependencies:
   http: ^1.6.0
 
   cupertino_icons: ^1.0.8
+  path_provider: ^2.0.11
+  android_intent_plus: ^6.0.0
+  flutter_app_installer: ^1.0.1
 
 dev_dependencies:
   flutter_test:

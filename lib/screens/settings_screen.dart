@@ -75,7 +75,7 @@ class SettingsScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Row(
             children: [
-              Icon(icon, size: 48, color: Theme.of(context).colorScheme.primary),
+              Icon(icon, size: 36, color: Theme.of(context).colorScheme.primary),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
