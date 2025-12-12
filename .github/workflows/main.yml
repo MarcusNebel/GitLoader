@@ -17,11 +17,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Java
+      - name: Set up Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '11'
+          java-version: '17'
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2
@@ -31,10 +31,13 @@ jobs:
       - name: Disable analytics
         run: flutter config --no-analytics
 
+      - name: Ensure ANDROID_SDK_ROOT is set
+        run: echo "ANDROID_SDK_ROOT=/usr/local/lib/android/sdk" >> $GITHUB_ENV
+
       - name: Install Android SDK components
         run: |
           # adjust API level / build-tools as needed
-          yes | sudo $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_SDK_ROOT "platform-tools" "platforms;android-33" "build-tools;33.0.2"
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_SDK_ROOT "platform-tools" "platforms;android-33" "build-tools;33.0.2"
         env:
           ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
 
@@ -52,7 +55,6 @@ jobs:
             echo "Could not find version in pubspec.yaml" >&2
             exit 1
           fi
-          # strip 'version:' and anything after '+'
           version=$(echo "$version_line" | sed -E 's/^\s*version:\s*//; s/\+.*//; s/"//g' | tr -d '[:space:]')
           echo "version=$version" >> $GITHUB_OUTPUT
           echo "Using version: $version"
