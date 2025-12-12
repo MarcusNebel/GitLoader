@@ -28,5 +28,31 @@
   "settings_theme_manage_themes": "Themen verwalten",
   "settings_theme_options_system": "Systemstandard",
   "settings_theme_options_light": "Hell",
-  "settings_theme_options_dark": "Dunkel"
+  "settings_theme_options_dark": "Dunkel",
+
+
+  "install_install": "Installieren",
+  "install_add_repo": "Neues Repo hinzufügen",
+  "install_add_repo_hint": "GitHub Repo URL",
+  "install_add_repo_cancel": "Abbrechen",
+  "install_add_repo_add": "Hinzufügen",
+  "install_already_installed": "App ist bereits installiert",
+  "install_download_start": "Download wird gestartet...",
+  "install_download_failed": "Download fehlgeschlagen",
+  "install_download_saved": "APK gespeichert unter: {path}",
+  "install_installation_failed": "Installation fehlgeschlagen",
+  "install_installation_started": "Installation gestartet",
+  
+  "update_refresh": "Aktualisieren",
+  "update_no_repos": "Keine installierten Repos gefunden",
+  "update_package": "Package: {package}",
+  "update_button": "Update installieren",
+  "update_download_start": "Download für {label} wird gestartet...",
+  "update_download_failed": "Download für {label} fehlgeschlagen",
+  "update_download_saved": "APK gespeichert unter: {path}",
+  "update_installation_failed": "Installation für {label} fehlgeschlagen",
+  "update_installation_started": "Installation für {label} gestartet",
+  "update_no_apk_found": "Keine APK-Releases gefunden für {label}",
+  "update_no_updates": "Keine Updates gefunden",
+  "update_available": "Update verfügbar: {version}"
 }

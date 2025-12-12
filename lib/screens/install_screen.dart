@@ -5,6 +5,7 @@ import 'package:gitloader/functions/manage_github_repo_urls.dart';
 import 'package:gitloader/functions/github_utils/release_fetcher.dart';
 import 'package:gitloader/functions/apk_utils/apk_downloader.dart';
 import 'package:gitloader/functions/apk_utils/apk_installer.dart';
+import 'package:gitloader/functions/update_functions/package_checker.dart';
 
 class InstallScreen extends StatefulWidget {
   const InstallScreen({super.key});
@@ -16,6 +17,7 @@ class InstallScreen extends StatefulWidget {
 class _InstallScreenState extends State<InstallScreen> {
   List<String> repos = [];
   Map<String, GitHubRelease?> releases = {};
+  List<Map<String, String>> installedApps = [];
   bool loading = true;
 
   @override
@@ -25,85 +27,107 @@ class _InstallScreenState extends State<InstallScreen> {
   }
 
   Future<void> _loadRepos() async {
-    final stored = await RepoStorage.loadRepos();
-    repos = stored;
+    setState(() => loading = true);
 
-    for (final repo in repos) {
-      releases[repo] = await fetchLatestApkRelease(repo);
+    final storedRepos = await RepoStorage.loadRepos();
+    repos = storedRepos;
+
+    final installedPackages = await AppChecker.getInstalledPackages();
+
+    installedApps = [];
+    for (final repoUrl in repos) {
+      final repoName = repoUrl.split('/').last.toLowerCase().replaceAll('.git', '');
+      final matchedPackage = installedPackages.firstWhere(
+        (pkg) => pkg.split('.').last.toLowerCase() == repoName,
+        orElse: () => "",
+      );
+
+      installedApps.add({
+        "label": repoName,
+        "repoUrl": repoUrl,
+        "package": matchedPackage,
+      });
     }
 
-    setState(() {
-      loading = false;
-    });
+    for (final repo in repos) {
+      final release = await fetchLatestApkRelease(repo);
+      releases[repo] = release;
+    }
+
+    setState(() => loading = false);
   }
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.install),
+        title: Text(loc.install),
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.add, color: Theme.of(context).colorScheme.primary),
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                String normalizedUrl = '';
-                return StatefulBuilder(
-                  builder: (context, setState) => AlertDialog(
-                    title: const Text('Neues Repo hinzufügen'),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextField(
-                          decoration: const InputDecoration(
-                            hintText: 'GitHub Repo URL',
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add, color: Theme.of(context).colorScheme.primary),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  String normalizedUrl = '';
+                  return StatefulBuilder(
+                    builder: (context, setState) => AlertDialog(
+                      title: Text(loc.install_add_repo),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextField(
+                            decoration: InputDecoration(
+                              hintText: loc.install_add_repo_hint,
+                            ),
+                            onChanged: (value) {
+                              setState(() {
+                                normalizedUrl = normalizeGitHubUrl(value);
+                              });
+                            },
                           ),
-                          onChanged: (value) {
-                            setState(() {
-                              normalizedUrl = normalizeGitHubUrl(value);
-                            });
-                          },
+                          const SizedBox(height: 10),
+                          Text(
+                            normalizedUrl,
+                            style: const TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text(loc.install_add_repo_cancel),
                         ),
-                        const SizedBox(height: 10),
-                        Text(
-                          normalizedUrl,
-                          style: const TextStyle(fontSize: 12, color: Colors.grey),
+                        TextButton(
+                          onPressed: () async {
+                            if (normalizedUrl.isNotEmpty) {
+                              await RepoStorage.addRepo(normalizedUrl);
+                              Navigator.of(context).pop();
+                              _loadRepos();
+                            }
+                          },
+                          child: Text(loc.install_add_repo_add),
                         ),
                       ],
                     ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('Abbrechen'),
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          if (normalizedUrl.isNotEmpty) {
-                            await RepoStorage.addRepo(normalizedUrl);
-                            Navigator.of(context).pop();
-                            _loadRepos();
-                          }
-                        },
-                        child: const Text('Hinzufügen'),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            );
-          },
-        ),
+                  );
+                },
+              );
+            },
+          ),
+        ],
       ),
       body: loading
           ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
               padding: const EdgeInsets.all(12),
-              itemCount: repos.length,
+              itemCount: installedApps.length,
               itemBuilder: (context, index) {
-                final repo = repos[index];
-                final release = releases[repo];
+                final app = installedApps[index];
+                final release = releases[app["repoUrl"] ?? ""];
 
                 return Card(
                   shape: RoundedRectangleBorder(
@@ -115,58 +139,60 @@ class _InstallScreenState extends State<InstallScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(repo,
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text(
+                          app["label"] ?? "Unbekannt",
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
                         const SizedBox(height: 8),
-                        if (release == null)
-                          const Text('Keine APK-Releases gefunden')
-                        else ...[
-                          Text('Version: ${release.version}'),
-                          Text('Release: ${release.releaseName}'),
+                        if (release != null) ...[
+                          Text(
+                            loc.settings_repository_options_version(release.version),
+                          ),
+                          Text(loc.settings_repository_options_filename(release.filename)),
                           const SizedBox(height: 8),
-                          ElevatedButton(
-                            onPressed: () async {
-                              if (release == null) return;
-
-                              // Nutzer informieren, dass Download gestartet wird
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text("Download wird gestartet...")),
-                              );
-
-                              // APK herunterladen
-                              final path = await ApkDownloader.downloadApk(
-                                release.downloadUrl,
-                                release.filename,
-                              );
-
-                              if (path == null) {
+                          if (app["package"] != null && app["package"]!.isNotEmpty)
+                            Text(
+                              loc.install_already_installed,
+                              style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                            )
+                          else
+                            ElevatedButton(
+                              onPressed: () async {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text("Download fehlgeschlagen")),
+                                  SnackBar(content: Text(loc.install_download_start)),
                                 );
-                                return;
-                              }
 
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("APK gespeichert unter: $path")),
-                              );
+                                final path = await ApkDownloader.downloadApk(
+                                  release.downloadUrl,
+                                  release.filename,
+                                );
 
-                              // APK installieren
-                              final installer = ApkInstaller();
-                              final ok = await installer.installApk(path);
+                                if (path == null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(loc.install_download_failed)),
+                                  );
+                                  return;
+                                }
 
-                              if (!ok) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text("Installation fehlgeschlagen")),
+                                  SnackBar(content: Text(loc.install_download_saved(path))),
                                 );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text("Installation gestartet")),
-                                );
-                              }
-                            },
-                            child: const Text("Installieren"),
-                          )
+
+                                final installer = ApkInstaller();
+                                final ok = await installer.installApk(path);
+
+                                if (!ok) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(loc.install_installation_failed)),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(loc.install_installation_started)),
+                                  );
+                                }
+                              },
+                              child: Text(loc.install_install),
+                            ),
                         ],
                       ],
                     ),

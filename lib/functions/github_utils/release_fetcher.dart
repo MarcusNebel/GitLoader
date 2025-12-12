@@ -27,10 +27,13 @@ Future<GitHubRelease?> fetchLatestApkRelease(String repoUrl) async {
     final apiUrl = 'https://api.github.com/repos/$repoPath/releases';
     final response = await http.get(Uri.parse(apiUrl));
 
-    if (response.statusCode != 200) return null;
+    print("GitHub API Response Status: ${response.statusCode}");
+    if (response.statusCode != 200) {
+      print("GitHub API Fehler: ${response.body}");
+      return null;
+    }
 
     final data = jsonDecode(response.body) as List<dynamic>;
-
     for (final release in data) {
       final assets = release['assets'] as List<dynamic>;
       final apkAsset = assets.firstWhere(
@@ -49,9 +52,10 @@ Future<GitHubRelease?> fetchLatestApkRelease(String repoUrl) async {
       }
     }
 
+    print("Keine APK-Assets gefunden für $repoUrl");
     return null;
   } catch (e) {
-    print('Fehler beim Abrufen der Releases: $e');
+    print("Fehler beim Abrufen von Releases für $repoUrl: $e");
     return null;
   }
 }

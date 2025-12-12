@@ -91,4 +91,91 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settings_theme_options_dark => 'Dunkel';
+
+  @override
+  String get install_install => 'Installieren';
+
+  @override
+  String get install_add_repo => 'Neues Repo hinzufügen';
+
+  @override
+  String get install_add_repo_hint => 'GitHub Repo URL';
+
+  @override
+  String get install_add_repo_cancel => 'Abbrechen';
+
+  @override
+  String get install_add_repo_add => 'Hinzufügen';
+
+  @override
+  String get install_already_installed => 'App ist bereits installiert';
+
+  @override
+  String get install_download_start => 'Download wird gestartet...';
+
+  @override
+  String get install_download_failed => 'Download fehlgeschlagen';
+
+  @override
+  String install_download_saved(Object path) {
+    return 'APK gespeichert unter: $path';
+  }
+
+  @override
+  String get install_installation_failed => 'Installation fehlgeschlagen';
+
+  @override
+  String get install_installation_started => 'Installation gestartet';
+
+  @override
+  String get update_refresh => 'Aktualisieren';
+
+  @override
+  String get update_no_repos => 'Keine installierten Repos gefunden';
+
+  @override
+  String update_package(Object package) {
+    return 'Package: $package';
+  }
+
+  @override
+  String get update_button => 'Update installieren';
+
+  @override
+  String update_download_start(Object label) {
+    return 'Download für $label wird gestartet...';
+  }
+
+  @override
+  String update_download_failed(Object label) {
+    return 'Download für $label fehlgeschlagen';
+  }
+
+  @override
+  String update_download_saved(Object path) {
+    return 'APK gespeichert unter: $path';
+  }
+
+  @override
+  String update_installation_failed(Object label) {
+    return 'Installation für $label fehlgeschlagen';
+  }
+
+  @override
+  String update_installation_started(Object label) {
+    return 'Installation für $label gestartet';
+  }
+
+  @override
+  String update_no_apk_found(Object label) {
+    return 'Keine APK-Releases gefunden für $label';
+  }
+
+  @override
+  String get update_no_updates => 'Keine Updates gefunden';
+
+  @override
+  String update_available(Object version) {
+    return 'Update verfügbar: $version';
+  }
 }

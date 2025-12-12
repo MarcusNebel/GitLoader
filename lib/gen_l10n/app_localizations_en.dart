@@ -58,11 +58,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String settings_repository_options_filename(Object filename) {
-    return 'Dateiname: $filename';
+    return 'Filename: $filename';
   }
 
   @override
-  String get settings_repository_options_description => 'Beschreibung:';
+  String get settings_repository_options_description => 'Description:';
 
   @override
   String get settings_repository_options_download_url => 'Download-URL:';
@@ -90,4 +90,91 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings_theme_options_dark => 'Dark';
+
+  @override
+  String get install_install => 'Install';
+
+  @override
+  String get install_add_repo => 'Add new repo';
+
+  @override
+  String get install_add_repo_hint => 'GitHub Repo URL';
+
+  @override
+  String get install_add_repo_cancel => 'Cancel';
+
+  @override
+  String get install_add_repo_add => 'Add';
+
+  @override
+  String get install_already_installed => 'App is already installed';
+
+  @override
+  String get install_download_start => 'Download starting...';
+
+  @override
+  String get install_download_failed => 'Download failed';
+
+  @override
+  String install_download_saved(Object path) {
+    return 'APK saved at: $path';
+  }
+
+  @override
+  String get install_installation_failed => 'Installation failed';
+
+  @override
+  String get install_installation_started => 'Installation started';
+
+  @override
+  String get update_refresh => 'Refresh';
+
+  @override
+  String get update_no_repos => 'No installed repos found';
+
+  @override
+  String update_package(Object package) {
+    return 'Package: $package';
+  }
+
+  @override
+  String get update_button => 'Install update';
+
+  @override
+  String update_download_start(Object label) {
+    return 'Download for $label starting...';
+  }
+
+  @override
+  String update_download_failed(Object label) {
+    return 'Download for $label failed';
+  }
+
+  @override
+  String update_download_saved(Object path) {
+    return 'APK saved at: $path';
+  }
+
+  @override
+  String update_installation_failed(Object label) {
+    return 'Installation for $label failed';
+  }
+
+  @override
+  String update_installation_started(Object label) {
+    return 'Installation for $label started';
+  }
+
+  @override
+  String update_no_apk_found(Object label) {
+    return 'No APK releases found for $label';
+  }
+
+  @override
+  String get update_no_updates => 'No updates found';
+
+  @override
+  String update_available(Object version) {
+    return 'Update available: $version';
+  }
 }

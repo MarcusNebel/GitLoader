@@ -185,13 +185,13 @@ abstract class AppLocalizations {
   /// No description provided for @settings_repository_options_filename.
   ///
   /// In en, this message translates to:
-  /// **'Dateiname: {filename}'**
+  /// **'Filename: {filename}'**
   String settings_repository_options_filename(Object filename);
 
   /// No description provided for @settings_repository_options_description.
   ///
   /// In en, this message translates to:
-  /// **'Beschreibung:'**
+  /// **'Description:'**
   String get settings_repository_options_description;
 
   /// No description provided for @settings_repository_options_download_url.
@@ -247,6 +247,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dark'**
   String get settings_theme_options_dark;
+
+  /// No description provided for @install_install.
+  ///
+  /// In en, this message translates to:
+  /// **'Install'**
+  String get install_install;
+
+  /// No description provided for @install_add_repo.
+  ///
+  /// In en, this message translates to:
+  /// **'Add new repo'**
+  String get install_add_repo;
+
+  /// No description provided for @install_add_repo_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub Repo URL'**
+  String get install_add_repo_hint;
+
+  /// No description provided for @install_add_repo_cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get install_add_repo_cancel;
+
+  /// No description provided for @install_add_repo_add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get install_add_repo_add;
+
+  /// No description provided for @install_already_installed.
+  ///
+  /// In en, this message translates to:
+  /// **'App is already installed'**
+  String get install_already_installed;
+
+  /// No description provided for @install_download_start.
+  ///
+  /// In en, this message translates to:
+  /// **'Download starting...'**
+  String get install_download_start;
+
+  /// No description provided for @install_download_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Download failed'**
+  String get install_download_failed;
+
+  /// No description provided for @install_download_saved.
+  ///
+  /// In en, this message translates to:
+  /// **'APK saved at: {path}'**
+  String install_download_saved(Object path);
+
+  /// No description provided for @install_installation_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Installation failed'**
+  String get install_installation_failed;
+
+  /// No description provided for @install_installation_started.
+  ///
+  /// In en, this message translates to:
+  /// **'Installation started'**
+  String get install_installation_started;
+
+  /// No description provided for @update_refresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get update_refresh;
+
+  /// No description provided for @update_no_repos.
+  ///
+  /// In en, this message translates to:
+  /// **'No installed repos found'**
+  String get update_no_repos;
+
+  /// No description provided for @update_package.
+  ///
+  /// In en, this message translates to:
+  /// **'Package: {package}'**
+  String update_package(Object package);
+
+  /// No description provided for @update_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Install update'**
+  String get update_button;
+
+  /// No description provided for @update_download_start.
+  ///
+  /// In en, this message translates to:
+  /// **'Download for {label} starting...'**
+  String update_download_start(Object label);
+
+  /// No description provided for @update_download_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Download for {label} failed'**
+  String update_download_failed(Object label);
+
+  /// No description provided for @update_download_saved.
+  ///
+  /// In en, this message translates to:
+  /// **'APK saved at: {path}'**
+  String update_download_saved(Object path);
+
+  /// No description provided for @update_installation_failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Installation for {label} failed'**
+  String update_installation_failed(Object label);
+
+  /// No description provided for @update_installation_started.
+  ///
+  /// In en, this message translates to:
+  /// **'Installation for {label} started'**
+  String update_installation_started(Object label);
+
+  /// No description provided for @update_no_apk_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No APK releases found for {label}'**
+  String update_no_apk_found(Object label);
+
+  /// No description provided for @update_no_updates.
+  ///
+  /// In en, this message translates to:
+  /// **'No updates found'**
+  String get update_no_updates;
+
+  /// No description provided for @update_available.
+  ///
+  /// In en, this message translates to:
+  /// **'Update available: {version}'**
+  String update_available(Object version);
 }
 
 class _AppLocalizationsDelegate

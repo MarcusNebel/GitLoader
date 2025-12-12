@@ -1,0 +1,82 @@
+name: Build Flutter Android App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-android:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.38.4"
+
+      - name: Disable analytics
+        run: flutter config --no-analytics
+
+      - name: Pub get
+        run: flutter pub get
+
+      - name: Extract version
+        id: version
+        run: |
+          $version = (Select-String -Path pubspec.yaml -Pattern '^version:' | ForEach-Object { $_.Line.Split(' ')[1].Split('+')[0] })
+          echo "version=$version" >> $env:GITHUB_OUTPUT
+          Write-Host "Using version: $version"
+
+      - name: Create tag if missing
+        run: |
+          $tag = "v${{ steps.version.outputs.version }}"
+          if (git rev-parse $tag) {
+            Write-Host "Tag $tag exists"
+          } else {
+            git tag $tag
+            git push origin $tag
+          }
+        shell: pwsh
+
+      - name: Delete release if exists
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          $tag = "v${{ steps.version.outputs.version }}"
+          $releaseId = gh release view $tag --json id -q ".id" 2>$null
+          if ($releaseId) { gh release delete $tag -y }
+        shell: pwsh
+
+      - name: Create fresh release
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          $tag = "v${{ steps.version.outputs.version }}"
+          $notes = git log -1 --pretty=format:"%h - %s"
+          gh release create $tag --title "GitLoader $tag" --notes "$notes"
+        shell: pwsh
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Rename Android Build
+        run: |
+          $version = "${{ steps.version.outputs.version }}"
+          Rename-Item -Path "build\app\outputs\flutter-apk\app-release.apk" -NewName "GitLoader-$version.apk"
+        shell: pwsh
+
+      - name: Upload APK
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          $tag = "v${{ steps.version.outputs.version }}"
+          gh release upload $tag "build\app\outputs\flutter-apk\GitLoader-${{ steps.version.outputs.version }}.apk"
+        shell: pwsh
