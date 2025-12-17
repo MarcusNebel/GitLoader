@@ -23,6 +23,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
   }
 
   Future<void> _loadInstalledApps() async {
+    if (!mounted) return;
     setState(() => loading = true);
 
     bool isVersionNewer(String latest, String current) {
@@ -50,6 +51,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
       final currentVersion = app["version"] ?? "1.0.0";
 
       String updateStatus = AppLocalizations.of(context)!.update_no_updates;
+      bool hasUpdate = false;
 
       if (app["repoUrl"] != null && app["repoUrl"]!.isNotEmpty) {
         final latestRelease = await fetchLatestApkRelease(app["repoUrl"]!);
@@ -57,6 +59,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
           if (isVersionNewer(latestRelease.version, currentVersion)) {
             updateStatus = AppLocalizations.of(context)!
                 .update_available(latestRelease.version);
+            hasUpdate = true;
           }
         }
       }
@@ -67,9 +70,11 @@ class _UpdateScreenState extends State<UpdateScreen> {
         "version": currentVersion,
         "updateStatus": updateStatus,
         "repoUrl": app["repoUrl"] ?? "",
+        "hasUpdate": hasUpdate.toString(),
       };
     }));
 
+    if (!mounted) return;
     setState(() {
       installedApps = appsWithStatus;
       loading = false;
@@ -115,8 +120,10 @@ class _UpdateScreenState extends State<UpdateScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(ok
-            ? AppLocalizations.of(context)!.update_installation_started(label)
-            : AppLocalizations.of(context)!.update_installation_failed(label)),
+            ? AppLocalizations.of(context)!
+                .update_installation_started(label)
+            : AppLocalizations.of(context)!
+                .update_installation_failed(label)),
       ),
     );
   }
@@ -146,6 +153,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
                   itemCount: installedApps.length,
                   itemBuilder: (context, index) {
                     final app = installedApps[index];
+                    final hasUpdate = app["hasUpdate"] == "true";
+
                     return Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
@@ -177,32 +186,24 @@ class _UpdateScreenState extends State<UpdateScreen> {
                               loc.update_package(app["package"] ?? "-"),
                             ),
                             const SizedBox(height: 12),
-                            ElevatedButton(
-                              onPressed: () async {
-                                if (app["repoUrl"] == null ||
-                                    app["repoUrl"]!.isEmpty) return;
-                                final release = await fetchLatestApkRelease(
-                                    app["repoUrl"]!);
-                                if (release != null) {
-                                  await _updateInstalledApp(app, release);
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(loc.update_no_apk_found(
-                                          app["label"] ?? "Unbekannt")),
-                                    ),
-                                  );
-                                }
-                              },
-                              child: Text(loc.update_button),
-                            ),
+                            if (hasUpdate)
+                              ElevatedButton(
+                                onPressed: () async {
+                                  final release =
+                                      await fetchLatestApkRelease(
+                                          app["repoUrl"]!);
+                                  if (release != null) {
+                                    await _updateInstalledApp(app, release);
+                                  }
+                                },
+                                child: Text(loc.update_button),
+                              ),
                             const SizedBox(height: 8),
                             Text(
                               app["updateStatus"] ?? "",
                               style: TextStyle(
                                 fontSize: 14,
-                                color: app["updateStatus"]!
-                                        .startsWith(loc.update_available(''))
+                                color: hasUpdate
                                     ? Colors.red
                                     : Colors.green,
                               ),

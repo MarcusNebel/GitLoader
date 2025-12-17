@@ -1,6 +1,7 @@
 // github_release_fetcher.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GitHubRelease {
   final String filename;
@@ -20,12 +21,27 @@ class GitHubRelease {
 
 Future<GitHubRelease?> fetchLatestApkRelease(String repoUrl) async {
   try {
+    final prefs = await SharedPreferences.getInstance();
+    final githubToken = prefs.getString('github_token');
+
     final repoPath = repoUrl
         .replaceFirst(RegExp(r'^(https?:\/\/)?(www\.)?github\.com\/'), '')
         .replaceFirst(RegExp(r'\.git$'), '');
 
     final apiUrl = 'https://api.github.com/repos/$repoPath/releases';
-    final response = await http.get(Uri.parse(apiUrl));
+
+    final headers = <String, String>{
+      'Accept': 'application/vnd.github+json',
+    };
+
+    if (githubToken != null && githubToken.isNotEmpty) {
+      headers['Authorization'] = 'Bearer $githubToken';
+    }
+
+    final response = await http.get(
+      Uri.parse(apiUrl),
+      headers: headers,
+    );
 
     print("GitHub API Response Status: ${response.statusCode}");
     if (response.statusCode != 200) {

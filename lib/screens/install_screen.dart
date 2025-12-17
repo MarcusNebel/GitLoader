@@ -27,6 +27,7 @@ class _InstallScreenState extends State<InstallScreen> {
   }
 
   Future<void> _loadRepos() async {
+    if (!mounted) return;
     setState(() => loading = true);
 
     final storedRepos = await RepoStorage.loadRepos();
@@ -54,6 +55,7 @@ class _InstallScreenState extends State<InstallScreen> {
       releases[repo] = release;
     }
 
+    if (!mounted) return;
     setState(() => loading = false);
   }
 
@@ -84,6 +86,7 @@ class _InstallScreenState extends State<InstallScreen> {
                               hintText: loc.install_add_repo_hint,
                             ),
                             onChanged: (value) {
+                              if (!mounted) return;
                               setState(() {
                                 normalizedUrl = normalizeGitHubUrl(value);
                               });

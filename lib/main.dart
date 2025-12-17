@@ -63,12 +63,14 @@ class _MyAppState extends State<MyApp> {
   }
 
   void setLocale(Locale? locale) {
+    if (!mounted) return;
     setState(() {
       _locale = locale;
     });
   }
 
   void setThemeMode(ThemeMode mode) {
+    if (!mounted) return;
     setState(() {
       _themeMode = mode;
     });
@@ -147,6 +149,7 @@ class _ThemeTestPageState extends State<ThemeTestPage> {
         ],
         selectedIndex: currentPageIndex,
         onDestinationSelected: (index) {
+          if (!mounted) return;
           setState(() {
             currentPageIndex = index;
           });

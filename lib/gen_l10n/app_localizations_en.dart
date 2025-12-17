@@ -30,11 +30,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings_theme => 'Theme';
 
   @override
-  String get settings_repositories => 'Manage Repositories';
+  String get settings_github => 'Github Settings';
 
   @override
-  String get settings_repository_options_manage_your_repositories =>
-      'Manage your repositories';
+  String get settings_repository_options_manage_your_github_settings =>
+      'Manage your GitHub settings';
 
   @override
   String get settings_repository_options_no_repositories =>
@@ -66,6 +66,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings_repository_options_download_url => 'Download-URL:';
+
+  @override
+  String get settings_repository_options_github_token => 'GitHub API Token';
+
+  @override
+  String get settings_repository_options_github_token_hint =>
+      'Enter your GitHub API token';
+
+  @override
+  String get settings_repository_options_save_token => 'Save token';
+
+  @override
+  String get settings_repository_options_token_saved =>
+      'GitHub token saved successfully';
+
+  @override
+  String get settings_repository_options_repositories => 'Repositories';
 
   @override
   String get settings_language_manage_languages => 'Manage languages';

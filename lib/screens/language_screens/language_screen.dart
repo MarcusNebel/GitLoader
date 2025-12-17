@@ -22,6 +22,7 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
   Future<void> _loadLanguage() async {
     final prefs = await SharedPreferences.getInstance();
     final code = prefs.getString('language');
+    if (!mounted) return;
     setState(() {
       _selectedLocale = code == null || code == 'system' ? null : Locale(code);
     });
@@ -37,6 +38,7 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
 
     MyApp.of(context)?.setLocale(locale);
 
+    if (!mounted) return;
     setState(() {
       _selectedLocale = locale;
     });

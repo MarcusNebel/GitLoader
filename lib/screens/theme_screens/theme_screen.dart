@@ -23,6 +23,7 @@ class _ThemesScreenState extends State<ThemesScreen> {
     final prefs = await SharedPreferences.getInstance();
     final saved = prefs.getString('theme');
 
+    if (!mounted) return;
     setState(() {
       if (saved == 'light') {
         _selectedMode = ThemeMode.light;
@@ -47,6 +48,7 @@ class _ThemesScreenState extends State<ThemesScreen> {
 
     MyApp.of(context)?.setThemeMode(mode);
 
+    if (!mounted) return;
     setState(() {
       _selectedMode = mode;
     });

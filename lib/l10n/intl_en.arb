@@ -8,9 +8,9 @@
 
   "settings_language": "Language",
   "settings_theme": "Theme",
-  "settings_repositories": "Manage Repositories",
+  "settings_github": "Github Settings",
 
-  "settings_repository_options_manage_your_repositories": "Manage your repositories",
+  "settings_repository_options_manage_your_github_settings": "Manage your GitHub settings",
   "settings_repository_options_no_repositories": "No repositories added.",
   "settings_repository_options_tap_to_view_release": "Tap to view releases",
   "settings_repository_options_no_apks_found": "No APKs found.",
@@ -19,6 +19,12 @@
   "settings_repository_options_filename": "Filename: {filename}",
   "settings_repository_options_description": "Description:",
   "settings_repository_options_download_url": "Download-URL:",
+  
+  "settings_repository_options_github_token": "GitHub API Token",
+  "settings_repository_options_github_token_hint": "Enter your GitHub API token",
+  "settings_repository_options_save_token": "Save token",
+  "settings_repository_options_token_saved": "GitHub token saved successfully",
+  "settings_repository_options_repositories": "Repositories",
 
   "settings_language_manage_languages": "Manage languages",
   "settings_language_options_system": "System Default",
@@ -30,7 +36,6 @@
   "settings_theme_options_light": "Light",
   "settings_theme_options_dark": "Dark",
 
-  
   "install_install": "Install",
   "install_add_repo": "Add new repo",
   "install_add_repo_hint": "GitHub Repo URL",

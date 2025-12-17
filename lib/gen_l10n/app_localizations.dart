@@ -140,17 +140,17 @@ abstract class AppLocalizations {
   /// **'Theme'**
   String get settings_theme;
 
-  /// No description provided for @settings_repositories.
+  /// No description provided for @settings_github.
   ///
   /// In en, this message translates to:
-  /// **'Manage Repositories'**
-  String get settings_repositories;
+  /// **'Github Settings'**
+  String get settings_github;
 
-  /// No description provided for @settings_repository_options_manage_your_repositories.
+  /// No description provided for @settings_repository_options_manage_your_github_settings.
   ///
   /// In en, this message translates to:
-  /// **'Manage your repositories'**
-  String get settings_repository_options_manage_your_repositories;
+  /// **'Manage your GitHub settings'**
+  String get settings_repository_options_manage_your_github_settings;
 
   /// No description provided for @settings_repository_options_no_repositories.
   ///
@@ -199,6 +199,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Download-URL:'**
   String get settings_repository_options_download_url;
+
+  /// No description provided for @settings_repository_options_github_token.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub API Token'**
+  String get settings_repository_options_github_token;
+
+  /// No description provided for @settings_repository_options_github_token_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your GitHub API token'**
+  String get settings_repository_options_github_token_hint;
+
+  /// No description provided for @settings_repository_options_save_token.
+  ///
+  /// In en, this message translates to:
+  /// **'Save token'**
+  String get settings_repository_options_save_token;
+
+  /// No description provided for @settings_repository_options_token_saved.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub token saved successfully'**
+  String get settings_repository_options_token_saved;
+
+  /// No description provided for @settings_repository_options_repositories.
+  ///
+  /// In en, this message translates to:
+  /// **'Repositories'**
+  String get settings_repository_options_repositories;
 
   /// No description provided for @settings_language_manage_languages.
   ///
