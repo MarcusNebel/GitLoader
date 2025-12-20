@@ -36,7 +36,6 @@ jobs:
 
       - name: Install Android SDK components
         run: |
-          # adjust API level / build-tools as needed
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_SDK_ROOT "platform-tools" "platforms;android-33" "build-tools;33.0.2"
         env:
           ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
@@ -90,6 +89,20 @@ jobs:
           notes=$(git log -1 --pretty=format:'%h - %s')
           gh release create "$tag" --title "GitLoader $tag" --notes "$notes"
         shell: bash
+
+      # === NEU: Keystore wiederherstellen ===
+      - name: Restore Android keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/upload-keystore.jks
+
+      - name: Create key.properties
+        run: |
+          cat <<EOF > android/key.properties
+          storePassword=${{ secrets.KEYSTORE_PASSWORD }}
+          keyPassword=${{ secrets.KEY_PASSWORD }}
+          keyAlias=${{ secrets.KEY_ALIAS }}
+          storeFile=upload-keystore.jks
+          EOF
 
       - name: Build APK (release)
         run: flutter build apk --release
