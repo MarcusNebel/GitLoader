@@ -108,5 +108,3 @@ jobs:
           tag="v${{ steps.version.outputs.version }}"
           gh release upload "$tag" "build/app/outputs/flutter-apk/GitLoader-${{ steps.version.outputs.version }}.apk"
         shell: bash
-
-Warum funktioniert dieser workflow trotz, dass die secret variable GITHUB_TOKEN heißt?
